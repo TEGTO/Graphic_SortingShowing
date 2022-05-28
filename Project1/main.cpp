@@ -56,11 +56,11 @@ enum TypeOfSorting
 //	
 //} // не робит 
 
-void shaker(vector <int> vc, int size)
+void shaker(vector <int> vc, int size, double coeff=1)
 {
 	int i, j, k;
 	
-	sf::RenderWindow wind(sf::VideoMode(800, 600), "Title");
+	sf::RenderWindow wind(sf::VideoMode(800*coeff, 600), "Title");
 	sf::Event ev;
 	sf::RectangleShape sq;
 	sq.setFillColor(sf::Color::White);
@@ -96,11 +96,11 @@ void shaker(vector <int> vc, int size)
 			wind.display();
 			this_thread::sleep_for(chrono::seconds(1));
 		}
-		
+		int size1 = size;
 		while (true)
 		{
-			for (i = 0; i < size;) {
-				for (j = i + 1; j < size; j++) {
+			for (i = 0; i < size1;) {
+				for (j = i + 1; j < size1; j++) {
 					if (vc[j] < vc[j - 1])
 					{
 						swap(vc[j], vc[j - 1]);
@@ -132,8 +132,8 @@ void shaker(vector <int> vc, int size)
 						}
 					}
 				}
-				size--;
-				for (k = size - 1; k > i; k--) {
+				size1--;
+				for (k = size1 - 1; k > i; k--) {
 					if (vc[k] < vc[k - 1])
 					{
 						swap(vc[k], vc[k - 1]);
@@ -176,14 +176,14 @@ void shaker(vector <int> vc, int size)
 		}
 	}
 }
-void insertion(vector <int> vc, int size)
+void insertion(vector <int> vc, int size, double coeff = 1)
 {
 	int buff = 0; 
 	int i, j;
 
 	
 
-	sf::RenderWindow wind(sf::VideoMode(800, 600), "Title");
+	sf::RenderWindow wind(sf::VideoMode(800*coeff, 600), "Title");
 	sf::Event ev;
 	sf::RectangleShape sq;
 	sq.setFillColor(sf::Color::White);
@@ -270,9 +270,9 @@ void insertion(vector <int> vc, int size)
 	}
 	
 }
-void bubble(vector <int> vc, int size)
+void bubble(vector <int> vc, int size, double coeff = 1)
 {
-	sf::RenderWindow wind(sf::VideoMode(800, 600), "Title");
+	sf::RenderWindow wind(sf::VideoMode(800*coeff, 600), "Title");
 	sf::Event ev;
 	sf::RectangleShape sq;
 	sq.setFillColor(sf::Color::White);
@@ -355,6 +355,7 @@ void menu()
 
 	int count = 0, size, type;
 	cout << "Enter the size" << endl;
+	cout << "\nEnter: ";
 	cin >> size;
 	vector <int> vc;
 	int random = rand() % 55;
@@ -365,20 +366,27 @@ void menu()
 		vc.push_back(random);
 		count++;
 	}
+	double coeff = 1;
 	
-	cout << "Chooice the sort's type:\n";
-	cout << "1.Bubble\n2.Insertion\n3.Quick\n";
+	if (size>30)
+	{
+		
+		double size1 = double(size);
+		coeff += ((size1 * 100 / 30) - 100) / 100;
+	}
+	cout << "\nChooice the sort's type:\n";
+	cout << "1.Bubble\n2.Insertion\n3.Quick\n\nEnter: ";
 	cin >> type;
 	switch (type)
 	{
 	case Sbubble:
-		bubble(vc, size);
+		bubble(vc, size,coeff);
 		break;
 	case Sinsertion:
-		insertion(vc, size);
+		insertion(vc, size,coeff);
 		break;
 	case Sshaker:
-		shaker(vc, size);
+		shaker(vc, size,coeff);
 		break;
 	default:
 		break;
